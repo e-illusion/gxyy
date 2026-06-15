@@ -1,0 +1,43 @@
+# Maven
+target/
+*.jar
+*.war
+
+# Node
+node_modules/
+dist/
+
+# Android
+*.apk
+*.aab
+.gradle/
+build/
+local.properties
+
+# IDE
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker volumes
+mysql_data/
+uploads_data/
+
+# Secrets
+.env
+sshpass
+*.pem
+
+# Temp
+*.log
+*.tar.gz
+/tmp/
+pass.sh
+pass_helper.sh
+sshpw

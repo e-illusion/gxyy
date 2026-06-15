@@ -1,0 +1,11 @@
+/* Global styles — most styling handled by Element Plus */
+
+body {
+  margin: 0;
+  background-color: #f5f7fa;
+  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+
+#app {
+  min-height: 100vh;
+}

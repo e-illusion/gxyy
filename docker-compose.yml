@@ -1,0 +1,68 @@
+version: "3.8"
+
+services:
+  # ============ MySQL 数据库 ============
+  mysql:
+    image: mysql:8.0
+    container_name: gxyy-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: gxyy
+      TZ: Asia/Shanghai
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./gxyy-server/src/main/resources/db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p123456"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+
+  # ============ Redis 缓存 ============
+  redis:
+    image: redis:7-alpine
+    container_name: gxyy-redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+  # ============ Spring Boot 后端 ============
+  backend:
+    build: ./gxyy-server
+    container_name: gxyy-backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/gxyy?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 123456
+      SPRING_DATA_REDIS_HOST: redis
+      GXYY_UPLOAD_PATH: /app/uploads/
+      GXYY_AI_DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY}
+      JAVA_TOOL_OPTIONS: "-Xmx256m -Xms128m"
+      TZ: Asia/Shanghai
+    ports:
+      - "8080:8080"
+    volumes:
+      - uploads_data:/app/uploads
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    restart: unless-stopped
+
+  # ============ Vue 前端 + Nginx ============
+  frontend:
+    build: ./gxyy-web
+    container_name: gxyy-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
+  uploads_data:
