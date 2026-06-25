@@ -88,59 +88,63 @@ const submit = async () => {
 </script>
 
 <template>
-  <div class="create-container">
-    <el-card>
-      <template #header>
-        <h2>发布物品</h2>
-      </template>
-      <el-form label-position="top" style="max-width: 640px; margin: 0 auto">
-        <el-form-item label="物品名称 *">
+  <div class="form-page">
+    <div class="form-card">
+      <h1 class="form-title">发布物品</h1>
+
+      <div class="form-body">
+        <!-- 物品名称 -->
+        <div class="field">
+          <label class="field-label">物品名称 <span class="required">*</span></label>
           <el-input v-model="form.title" placeholder="给你的物品起个名字" size="large" />
-        </el-form-item>
+        </div>
 
-        <el-row :gutter="16">
-          <el-col :span="12">
-            <el-form-item label="分类 *">
-              <el-select v-model="form.categoryId" placeholder="选择分类" size="large" style="width: 100%">
-                <el-option v-for="cat in categories" :key="cat.id" :label="cat.name" :value="cat.id" />
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="成色 *">
-              <el-select v-model="form.condition" size="large" style="width: 100%">
-                <el-option v-for="c in conditionOptions" :key="c.value" :label="c.label" :value="c.value" />
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
+        <!-- 分类 + 成色 -->
+        <div class="field-row">
+          <div class="field field-half">
+            <label class="field-label">分类 <span class="required">*</span></label>
+            <el-select v-model="form.categoryId" placeholder="选择分类" size="large" style="width: 100%">
+              <el-option v-for="cat in categories" :key="cat.id" :label="cat.name" :value="cat.id" />
+            </el-select>
+          </div>
+          <div class="field field-half">
+            <label class="field-label">成色 <span class="required">*</span></label>
+            <el-select v-model="form.condition" size="large" style="width: 100%">
+              <el-option v-for="c in conditionOptions" :key="c.value" :label="c.label" :value="c.value" />
+            </el-select>
+          </div>
+        </div>
 
-        <el-form-item>
-          <template #label>
-            <span>物品描述 *</span>
-            <el-button size="small" type="warning" :loading="aiLoading" @click="aiPolish"
-              style="margin-left: 12px">
-              ✨ AI 润色
-            </el-button>
-          </template>
+        <!-- 物品描述 -->
+        <div class="field">
+          <div class="field-label-row">
+            <label class="field-label">物品描述 <span class="required">*</span></label>
+            <button type="button" class="ai-btn" :disabled="aiLoading" @click="aiPolish">
+              {{ aiLoading ? '润色中...' : 'AI 润色' }}
+            </button>
+          </div>
           <el-input
             v-model="form.description"
             type="textarea"
             :rows="5"
             placeholder="描述你的物品：品牌、型号、购买时间、使用情况等..."
           />
-        </el-form-item>
+        </div>
 
-        <el-form-item label="想换什么">
+        <!-- 想换什么 -->
+        <div class="field">
+          <label class="field-label">想换什么</label>
           <el-input
             v-model="form.wantDescription"
             type="textarea"
             :rows="2"
             placeholder="你想换到什么样的物品？（选填）"
           />
-        </el-form-item>
+        </div>
 
-        <el-form-item label="物品图片">
+        <!-- 图片上传 -->
+        <div class="field">
+          <label class="field-label">物品图片</label>
           <el-upload
             :auto-upload="false"
             :on-change="handleFileChange"
@@ -150,24 +154,106 @@ const submit = async () => {
           >
             <el-icon :size="32"><Plus /></el-icon>
           </el-upload>
-          <template #extra>
-            <span style="font-size: 12px; color: #999">支持多张图片，每张不超过10MB</span>
-          </template>
-        </el-form-item>
+          <p class="field-hint">支持多张图片，每张不超过10MB</p>
+        </div>
 
-        <el-form-item>
-          <el-button type="primary" size="large" :loading="loading" @click="submit" style="width: 100%">
-            发布
-          </el-button>
-        </el-form-item>
-      </el-form>
-    </el-card>
+        <!-- 提交 -->
+        <button class="submit-btn" :disabled="loading" @click="submit">
+          {{ loading ? '发布中...' : '发布' }}
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
-.create-container {
-  max-width: 800px;
+.form-page {
+  max-width: 720px;
   margin: 0 auto;
 }
+
+.form-card {
+  background: var(--color-canvas);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+}
+
+.form-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--color-ink);
+  margin-bottom: var(--spacing-xl);
+}
+
+.form-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.field {
+  margin-bottom: var(--spacing-lg);
+}
+
+.field-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-muted);
+  margin-bottom: 6px;
+}
+.required { color: var(--color-primary); }
+
+.field-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.ai-btn {
+  background: var(--color-surface-soft);
+  color: var(--color-primary);
+  border: 1px solid var(--color-hairline);
+  padding: 4px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: var(--radius-tag);
+  cursor: pointer;
+  font-family: inherit;
+  transition: background var(--transition-fast);
+}
+.ai-btn:hover { background: var(--color-surface-strong); }
+.ai-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-base);
+}
+.field-half { margin-bottom: var(--spacing-lg); }
+
+.field-hint {
+  font-size: 12px;
+  color: var(--color-muted-soft);
+  margin-top: var(--spacing-xs);
+}
+
+.submit-btn {
+  width: 100%;
+  height: 48px;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  border: none;
+  border-radius: var(--radius-button);
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  margin-top: var(--spacing-sm);
+  transition: background var(--transition-fast);
+}
+.submit-btn:hover { background: var(--color-primary-dark); }
+.submit-btn:active { background: var(--color-primary-active); }
+.submit-btn:disabled { background: var(--color-primary-disabled); cursor: not-allowed; }
 </style>

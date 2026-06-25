@@ -12,6 +12,10 @@ import com.gxyy.entity.Category;
 import com.gxyy.entity.Item;
 import com.gxyy.entity.User;
 import com.gxyy.mapper.CategoryMapper;
+import com.gxyy.mapper.FollowMapper;
+import com.gxyy.service.NotificationService;
+import com.gxyy.entity.Follow;
+import com.gxyy.entity.Notification;
 import com.gxyy.mapper.ItemMapper;
 import com.gxyy.mapper.UserMapper;
 import com.gxyy.service.ItemService;
@@ -35,6 +39,8 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
 
     private final UserMapper userMapper;
     private final CategoryMapper categoryMapper;
+    private final FollowMapper followMapper;
+    private final NotificationService notificationService;
 
     @Value("${gxyy.upload.path}")
     private String uploadPath;
@@ -65,6 +71,25 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
         }
 
         baseMapper.insert(item);
+
+        // 通知粉丝
+        List<Follow> follows = followMapper.selectList(
+            new LambdaQueryWrapper<Follow>().eq(Follow::getFolloweeId, userId));
+        if (follows != null && !follows.isEmpty()) {
+            User owner = userMapper.selectById(userId);
+            String n = owner != null ? owner.getUsername() : "user";
+            String t = item.getTitle();
+            if (t.length() > 20) t = t.substring(0, 20) + "...";
+            for (Follow f : follows) {
+                Notification notif = new Notification();
+                notif.setUserId(f.getFollowerId());
+                notif.setType("NEW_ITEM");
+                notif.setContent(n + " posted: " + t);
+                notif.setRelatedId(item.getId());
+                notificationService.save(notif);
+            }
+        }
+
         return buildItemVO(item);
     }
 
@@ -110,13 +135,22 @@ public class ItemServiceImpl extends ServiceImpl<ItemMapper, Item> implements It
     }
 
     @Override
-    public Page<ItemVO> getItemList(Integer page, Integer size, String keyword, Integer categoryId) {
+    public Page<ItemVO> getItemList(Integer page, Integer size, String keyword, Integer categoryId, Long ownerId, String condition, String sortOrder) {
         LambdaQueryWrapper<Item> wrapper = new LambdaQueryWrapper<Item>()
                 .eq(Item::getStatus, "ACTIVE")
                 .orderByDesc(Item::getCreateTime);
 
         if (categoryId != null) {
             wrapper.eq(Item::getCategoryId, categoryId);
+        }
+        if (ownerId != null) {
+            wrapper.eq(Item::getOwnerId, ownerId);
+        }
+        if (StrUtil.isNotBlank(condition)) {
+            wrapper.eq(Item::getCondition, condition);
+        }
+        if ("oldest".equals(sortOrder)) {
+            wrapper.orderByAsc(Item::getCreateTime);
         }
         if (StrUtil.isNotBlank(keyword)) {
             wrapper.and(w -> w.like(Item::getTitle, keyword)

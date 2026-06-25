@@ -52,8 +52,8 @@ public class ItemController {
     public Result<Page<ItemVO>> list(@RequestParam(defaultValue = "1") Integer page,
                                       @RequestParam(defaultValue = "10") Integer size,
                                       @RequestParam(required = false) String keyword,
-                                      @RequestParam(required = false) Integer categoryId) {
-        return Result.ok(itemService.getItemList(page, size, keyword, categoryId));
+                                      @RequestParam(required = false) Integer categoryId, @RequestParam(required = false) Long ownerId, @RequestParam(required = false) String condition, @RequestParam(required = false) String sortOrder) {
+        return Result.ok(itemService.getItemList(page, size, keyword, categoryId, ownerId, condition, sortOrder));
     }
 
     @GetMapping("/my")

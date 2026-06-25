@@ -1,0 +1,314 @@
+/* ========================================
+   GXYY 全局主题系统
+   主色调: #BB6688 (玫瑰紫)
+   辅色: #8888CC (紫蓝) / #CCAA88 (暖棕) / #DDAACC (粉紫)
+   ======================================== */
+
+:root {
+  /* ── 主色调 #BB6688 ── */
+  --color-primary: #BB6688;
+  --color-primary-light-1: #C27A98;
+  --color-primary-light-2: #C98E9E;
+  --color-primary-light-3: #D1A2A8;
+  --color-primary-light-4: #D8B6B2;
+  --color-primary-light-5: #E0CABC;
+  --color-primary-light-6: #E7DEC6;
+  --color-primary-light-7: #EFF2D0;
+  --color-primary-light-8: #F6F6DA;
+  --color-primary-light-9: #FDFBE4;
+  --color-primary-dark: #A85572;
+  --color-primary-dark-1: #95445C;
+  --color-primary-dark-2: #823346;
+
+  /* ── 辅色 #8888CC（紫蓝，替代默认蓝）── */
+  --color-secondary: #8888CC;
+  --color-secondary-light: #A0A0D8;
+  --color-secondary-lighter: #B8B8E4;
+  --color-secondary-dark: #7070B8;
+  --color-secondary-darker: #5858A4;
+
+  /* ── 暖色 #CCAA88（暖棕）── */
+  --color-warm: #CCAA88;
+  --color-warm-light: #D8BB9D;
+  --color-warm-lighter: #E4CCB2;
+  --color-warm-dark: #B89977;
+  --color-warm-darker: #A48866;
+
+  /* ── 粉色 #DDAACC（粉紫）── */
+  --color-pink: #DDAACC;
+  --color-pink-light: #E6C0D8;
+  --color-pink-lighter: #EFD6E4;
+  --color-pink-dark: #C495B8;
+  --color-pink-darker: #AB80A4;
+
+  /* ── 语义色彩 ── */
+  --color-success: #77BB88;
+  --color-success-light: #E8F5EA;
+  --color-warning: #CCAA88;
+  --color-warning-light: #FDF5EC;
+  --color-danger: #CC7788;
+  --color-danger-light: #FDEDEF;
+  --color-info: #8888CC;
+
+  /* ── 背景 ── */
+  --bg-warm-white: #FBFAF8;
+  --bg-page: #F6F4F1;
+  --bg-card: #FFFFFF;
+  --bg-glass: rgba(255, 255, 255, 0.72);
+
+  /* ── 文字 ── */
+  --text-primary: #2C2C2C;
+  --text-secondary: #666666;
+  --text-muted: #999999;
+  --text-placeholder: #BBBBBB;
+
+  /* ── 边框 & 分割线 ── */
+  --border-color: #E8E4DE;
+  --border-color-light: #F0ECE6;
+
+  /* ── 阴影 ── */
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.04),
+                0 4px 16px rgba(0, 0, 0, 0.04),
+                0 8px 32px rgba(0, 0, 0, 0.03);
+  --shadow-card-hover: 0 4px 12px rgba(0, 0, 0, 0.06),
+                       0 8px 24px rgba(0, 0, 0, 0.06),
+                       0 16px 48px rgba(0, 0, 0, 0.05);
+  --shadow-nav: 0 2px 12px rgba(0, 0, 0, 0.06);
+  --shadow-dialog: 0 8px 40px rgba(0, 0, 0, 0.12);
+
+  /* ── 圆角 ── */
+  --radius-card: 16px;
+  --radius-button: 8px;
+  --radius-input: 8px;
+  --radius-tag: 6px;
+  --radius-modal: 20px;
+
+  /* ── 过渡 ── */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ── 字体 ── */
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+                 'Helvetica Neue', Helvetica, 'PingFang SC', 'Microsoft YaHei',
+                 sans-serif;
+
+  /* ══════════════════════════════════════
+     Element Plus CSS 变量覆盖
+     ══════════════════════════════════════ */
+
+  --el-color-primary: var(--color-primary);
+  --el-color-primary-light-3: var(--color-primary-light-3);
+  --el-color-primary-light-5: var(--color-primary-light-5);
+  --el-color-primary-light-7: var(--color-primary-light-7);
+  --el-color-primary-light-8: var(--color-primary-light-8);
+  --el-color-primary-light-9: var(--color-primary-light-9);
+  --el-color-primary-dark-2: var(--color-primary-dark-2);
+
+  --el-color-success: var(--color-success);
+  --el-color-success-light-3: #AADDBB;
+  --el-color-success-light-5: #CCEED5;
+  --el-color-success-light-7: #DDF5E5;
+  --el-color-success-light-8: #E8F8EE;
+  --el-color-success-light-9: var(--color-success-light);
+  --el-color-success-dark-2: #559966;
+
+  --el-color-warning: var(--color-warning);
+  --el-color-warning-light-3: #DDBB99;
+  --el-color-warning-light-5: #EECCAA;
+  --el-color-warning-light-7: #F5DDCC;
+  --el-color-warning-light-8: #F8E8DD;
+  --el-color-warning-light-9: var(--color-warning-light);
+  --el-color-warning-dark-2: #AA8866;
+
+  --el-color-danger: var(--color-danger);
+  --el-color-danger-light-3: #DD99A0;
+  --el-color-danger-light-5: #EEBBCC;
+  --el-color-danger-light-7: #F5DDDF;
+  --el-color-danger-light-8: #F8E8EA;
+  --el-color-danger-light-9: var(--color-danger-light);
+  --el-color-danger-dark-2: #AA5566;
+
+  --el-color-info: var(--color-info);
+
+  /* Element Plus 背景 */
+  --el-bg-color: var(--bg-card);
+  --el-bg-color-page: var(--bg-page);
+  --el-bg-color-overlay: var(--bg-card);
+  --el-fill-color-blank: var(--bg-card);
+  --el-fill-color-light: #F6F4F1;
+
+  /* Element Plus 文字 */
+  --el-text-color-primary: var(--text-primary);
+  --el-text-color-regular: var(--text-secondary);
+  --el-text-color-secondary: var(--text-muted);
+  --el-text-color-placeholder: var(--text-placeholder);
+
+  /* Element Plus 边框 */
+  --el-border-color: var(--border-color);
+  --el-border-color-light: var(--border-color-light);
+  --el-border-color-lighter: var(--border-color-light);
+  --el-border-color-extra-light: #F5F1EC;
+
+  /* Element Plus 圆角 */
+  --el-border-radius-base: var(--radius-input);
+  --el-border-radius-small: 6px;
+  --el-border-radius-round: 20px;
+
+  /* Element Plus 盒子阴影 */
+  --el-box-shadow-light: var(--shadow-card);
+  --el-box-shadow: var(--shadow-card-hover);
+  --el-box-shadow-dark: var(--shadow-dialog);
+
+  /* Element Plus 字体 */
+  --el-font-family: var(--font-family);
+}
+
+/* ══════════════════════════════════════
+   暗黑模式
+   ══════════════════════════════════════ */
+
+.dark {
+  --color-primary: #C9859F;
+  --color-primary-light-3: #B87288;
+  --color-primary-light-5: #A85F73;
+  --color-primary-light-7: #944A5C;
+  --color-primary-light-9: #7D3545;
+  --color-primary-dark-2: #DAA3B7;
+
+  --color-secondary: #A0A0D8;
+  --color-warm: #D8BB9D;
+  --color-pink: #E6C0D8;
+
+  --color-success: #77BB88;
+  --color-warning: #D8BB9D;
+  --color-danger: #DD99A0;
+
+  --bg-warm-white: #1A1A2E;
+  --bg-page: #141428;
+  --bg-card: #1E1E36;
+  --bg-glass: rgba(30, 30, 54, 0.80);
+
+  --text-primary: #E8E8F0;
+  --text-secondary: #A0A0B8;
+  --text-muted: #707088;
+  --text-placeholder: #505068;
+
+  --border-color: #2E2E48;
+  --border-color-light: #262640;
+
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.30),
+                0 4px 16px rgba(0, 0, 0, 0.20),
+                0 8px 32px rgba(0, 0, 0, 0.15);
+  --shadow-card-hover: 0 4px 12px rgba(0, 0, 0, 0.40),
+                       0 8px 24px rgba(0, 0, 0, 0.30),
+                       0 16px 48px rgba(0, 0, 0, 0.20);
+  --shadow-nav: 0 2px 12px rgba(0, 0, 0, 0.40);
+  --shadow-dialog: 0 8px 40px rgba(0, 0, 0, 0.50);
+
+  --el-color-primary: var(--color-primary);
+  --el-color-primary-light-3: var(--color-primary-light-3);
+  --el-color-primary-light-5: var(--color-primary-light-5);
+  --el-color-primary-light-7: var(--color-primary-light-7);
+  --el-color-primary-light-9: var(--color-primary-light-9);
+  --el-color-primary-dark-2: var(--color-primary-dark-2);
+
+  --el-color-success: var(--color-success);
+  --el-color-warning: var(--color-warning);
+  --el-color-danger: var(--color-danger);
+
+  --el-bg-color: var(--bg-card);
+  --el-bg-color-page: var(--bg-page);
+  --el-bg-color-overlay: var(--bg-card);
+  --el-fill-color-blank: var(--bg-card);
+  --el-fill-color-light: #262640;
+
+  --el-text-color-primary: var(--text-primary);
+  --el-text-color-regular: var(--text-secondary);
+  --el-text-color-secondary: var(--text-muted);
+  --el-text-color-placeholder: var(--text-placeholder);
+
+  --el-border-color: var(--border-color);
+  --el-border-color-light: var(--border-color-light);
+  --el-border-color-lighter: var(--border-color-light);
+  --el-border-color-extra-light: #1E1E36;
+
+  --el-box-shadow-light: var(--shadow-card);
+  --el-box-shadow: var(--shadow-card-hover);
+  --el-box-shadow-dark: var(--shadow-dialog);
+}
+
+/* ══════════════════════════════════════
+   全局样式
+   ══════════════════════════════════════ */
+
+body {
+  margin: 0;
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  transition: background-color var(--transition-normal), color var(--transition-normal);
+}
+
+#app {
+  min-height: 100vh;
+}
+
+/* ── 通用玻璃态卡片 ── */
+.glass-card {
+  background: var(--bg-glass);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border-color-light);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow var(--transition-normal), transform var(--transition-normal);
+}
+
+/* ── 通用 bento 卡片 ── */
+.bento-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border-color-light);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow var(--transition-normal), transform var(--transition-normal);
+}
+
+.bento-card:hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-4px);
+}
+
+/* ── Hero 径向渐变背景 ── */
+.hero-bg {
+  background:
+    radial-gradient(ellipse at 30% 50%, rgba(187, 102, 136, 0.10) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 50%, rgba(136, 136, 204, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 80%, rgba(204, 170, 136, 0.05) 0%, transparent 50%),
+    var(--bg-page);
+}
+
+/* ── 页面过渡动画 ── */
+.page-fade-enter-active,
+.page-fade-leave-active {
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.page-fade-enter-from {
+  opacity: 0;
+  transform: translateY(12px);
+}
+.page-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+/* ── prefers-reduced-motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -40,6 +40,12 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
+    path: '/favorites',
+    name: 'Favorites',
+    component: () => import('../views/item/Favorites.vue'),
+    meta: { requiresAuth: true },
+  },
+  {
     path: '/exchange-requests',
     name: 'ExchangeRequests',
     component: () => import('../views/exchange/Requests.vue'),

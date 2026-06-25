@@ -24,4 +24,7 @@ export const aiApi = {
   polish(description) {
     return api.post('/api/ai/polish', { description })
   },
+  match(itemId) {
+    return api.post(`/api/ai/match/${itemId}`)
+  },
 }

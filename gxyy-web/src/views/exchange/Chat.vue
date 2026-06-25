@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import api from '../../api/index'
@@ -56,45 +56,50 @@ onMounted(fetchMessages)
 
 // Auto-refresh every 3 seconds
 const timer = setInterval(fetchMessages, 3000)
-import { onUnmounted } from 'vue'
 onUnmounted(() => clearInterval(timer))
 </script>
 
 <template>
   <div class="chat-container">
+    <!-- Header -->
     <div class="chat-header">
-      <el-button text @click="router.back()">
-        <el-icon><ArrowLeft /></el-icon> 返回
-      </el-button>
+      <button class="back-btn" @click="router.back()">
+        <el-icon :size="18"><ArrowLeft /></el-icon>
+        <span>返回</span>
+      </button>
       <span class="chat-title">交换聊天</span>
     </div>
 
+    <!-- Messages -->
     <div v-loading="loading" class="chat-messages" ref="chatBox">
       <div v-if="messages.length === 0 && !loading" class="empty-chat">
-        <p>暂无消息，开始聊天确定交换时间和地点吧</p>
+        <p>暂无消息</p>
+        <span>开始聊天确定交换时间和地点吧</span>
       </div>
       <div
         v-for="msg in messages"
         :key="msg.id"
-        :class="['message-item', msg.isMine ? 'mine' : 'other']"
+        :class="['msg-item', msg.isMine ? 'msg-mine' : 'msg-other']"
       >
-        <div class="message-sender" v-if="!msg.isMine">{{ msg.senderName }}</div>
-        <div class="message-bubble">{{ msg.content }}</div>
-        <div class="message-time">{{ msg.createTime?.substring(11, 16) }}</div>
+        <span class="msg-sender" v-if="!msg.isMine">{{ msg.senderName }}</span>
+        <div class="msg-bubble">{{ msg.content }}</div>
+        <span class="msg-time">{{ msg.createTime?.substring(11, 16) }}</span>
       </div>
     </div>
 
-    <div class="chat-input">
-      <el-input
+    <!-- Input -->
+    <div class="chat-input-bar">
+      <input
         v-model="newMsg"
+        class="chat-text-input"
         placeholder="输入消息..."
         @keyup.enter="sendMessage"
         :disabled="sending"
-      >
-        <template #append>
-          <el-button :loading="sending" @click="sendMessage">发送</el-button>
-        </template>
-      </el-input>
+      />
+      <button class="send-btn" :disabled="sending || !newMsg.trim()" @click="sendMessage">
+        <el-icon :size="18" v-if="!sending"><Promotion /></el-icon>
+        <span v-else>...</span>
+      </button>
     </div>
   </div>
 </template>
@@ -107,68 +112,137 @@ onUnmounted(() => clearInterval(timer))
   max-width: 640px;
   margin: 0 auto;
 }
+
+/* Header */
 .chat-header {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 0;
-  border-bottom: 1px solid #eee;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md) 0;
+  border-bottom: 1px solid var(--color-hairline);
 }
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-ink);
+  background: var(--color-surface-soft);
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  font-family: inherit;
+  transition: background var(--transition-fast);
+}
+.back-btn:hover { background: var(--color-surface-strong); }
 .chat-title {
   font-size: 18px;
   font-weight: 600;
+  color: var(--color-ink);
 }
+
+/* Messages area */
 .chat-messages {
   flex: 1;
   overflow-y: auto;
-  padding: 16px 0;
+  padding: var(--spacing-base) 0;
 }
 .empty-chat {
-  text-align: center;
-  color: #999;
-  margin-top: 60px;
-}
-.message-item {
-  margin-bottom: 16px;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-xs);
+  margin-top: 60px;
+  color: var(--color-muted-soft);
+  font-size: 14px;
 }
-.message-item.mine {
-  align-items: flex-end;
+
+/* Message items */
+.msg-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: var(--spacing-base);
 }
-.message-item.other {
-  align-items: flex-start;
-}
-.message-sender {
+.msg-mine { align-items: flex-end; }
+.msg-other { align-items: flex-start; }
+
+.msg-sender {
   font-size: 12px;
-  color: #999;
+  color: var(--color-muted);
   margin-bottom: 4px;
+  padding: 0 4px;
 }
-.message-bubble {
+
+.msg-bubble {
   max-width: 70%;
-  padding: 10px 14px;
-  border-radius: 16px;
+  padding: 10px 16px;
+  border-radius: 18px;
   font-size: 15px;
   line-height: 1.5;
   word-break: break-word;
 }
-.mine .message-bubble {
-  background-color: #409eff;
-  color: #fff;
+.msg-mine .msg-bubble {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
   border-bottom-right-radius: 4px;
 }
-.other .message-bubble {
-  background-color: #f0f0f0;
-  color: #333;
+.msg-other .msg-bubble {
+  background: var(--color-surface-soft);
+  color: var(--color-ink);
   border-bottom-left-radius: 4px;
 }
-.message-time {
+
+.msg-time {
   font-size: 11px;
-  color: #bbb;
+  color: var(--color-muted-soft);
   margin-top: 4px;
+  padding: 0 4px;
 }
-.chat-input {
-  padding: 12px 0;
-  border-top: 1px solid #eee;
+
+/* Input bar */
+.chat-input-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-md) 0;
+  border-top: 1px solid var(--color-hairline);
 }
+.chat-text-input {
+  flex: 1;
+  height: 44px;
+  padding: 0 var(--spacing-base);
+  font-size: 14px;
+  color: var(--color-ink);
+  background: var(--color-surface-soft);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-full);
+  outline: none;
+  font-family: inherit;
+  transition: border-color var(--transition-fast);
+}
+.chat-text-input:focus {
+  border-color: var(--color-ink);
+}
+.chat-text-input::placeholder {
+  color: var(--color-muted-soft);
+}
+
+.send-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background var(--transition-fast);
+}
+.send-btn:hover { background: var(--color-primary-dark); }
+.send-btn:disabled { background: var(--color-primary-disabled); cursor: not-allowed; }
 </style>

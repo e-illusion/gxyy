@@ -64,50 +64,108 @@ const submit = async () => {
 </script>
 
 <template>
-  <div class="create-container">
-    <el-card>
-      <template #header>
-        <h2>编辑物品</h2>
-      </template>
-      <el-form label-position="top" style="max-width: 640px; margin: 0 auto">
-        <el-form-item label="物品名称">
+  <div class="form-page">
+    <div class="form-card">
+      <h1 class="form-title">编辑物品</h1>
+
+      <div class="form-body">
+        <div class="field">
+          <label class="field-label">物品名称</label>
           <el-input v-model="form.title" size="large" />
-        </el-form-item>
-        <el-row :gutter="16">
-          <el-col :span="12">
-            <el-form-item label="分类">
-              <el-select v-model="form.categoryId" size="large" style="width: 100%">
-                <el-option v-for="cat in categories" :key="cat.id" :label="cat.name" :value="cat.id" />
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="成色">
-              <el-select v-model="form.condition" size="large" style="width: 100%">
-                <el-option v-for="c in conditionOptions" :key="c.value" :label="c.label" :value="c.value" />
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-form-item label="物品描述">
+        </div>
+
+        <div class="field-row">
+          <div class="field field-half">
+            <label class="field-label">分类</label>
+            <el-select v-model="form.categoryId" size="large" style="width: 100%">
+              <el-option v-for="cat in categories" :key="cat.id" :label="cat.name" :value="cat.id" />
+            </el-select>
+          </div>
+          <div class="field field-half">
+            <label class="field-label">成色</label>
+            <el-select v-model="form.condition" size="large" style="width: 100%">
+              <el-option v-for="c in conditionOptions" :key="c.value" :label="c.label" :value="c.value" />
+            </el-select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field-label">物品描述</label>
           <el-input v-model="form.description" type="textarea" :rows="5" />
-        </el-form-item>
-        <el-form-item label="想换什么">
+        </div>
+
+        <div class="field">
+          <label class="field-label">想换什么</label>
           <el-input v-model="form.wantDescription" type="textarea" :rows="2" />
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" size="large" :loading="loading" @click="submit" style="width: 100%">
-            保存修改
-          </el-button>
-        </el-form-item>
-      </el-form>
-    </el-card>
+        </div>
+
+        <button class="submit-btn" :disabled="loading" @click="submit">
+          {{ loading ? '保存中...' : '保存修改' }}
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
 <style scoped>
-.create-container {
-  max-width: 800px;
+.form-page {
+  max-width: 720px;
   margin: 0 auto;
 }
+
+.form-card {
+  background: var(--color-canvas);
+  border: 1px solid var(--color-hairline);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+}
+
+.form-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--color-ink);
+  margin-bottom: var(--spacing-xl);
+}
+
+.form-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.field {
+  margin-bottom: var(--spacing-lg);
+}
+
+.field-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-muted);
+  margin-bottom: 6px;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-base);
+}
+.field-half { margin-bottom: var(--spacing-lg); }
+
+.submit-btn {
+  width: 100%;
+  height: 48px;
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  border: none;
+  border-radius: var(--radius-button);
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  margin-top: var(--spacing-sm);
+  transition: background var(--transition-fast);
+}
+.submit-btn:hover { background: var(--color-primary-dark); }
+.submit-btn:active { background: var(--color-primary-active); }
+.submit-btn:disabled { background: var(--color-primary-disabled); cursor: not-allowed; }
 </style>

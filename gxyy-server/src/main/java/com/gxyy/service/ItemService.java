@@ -19,7 +19,7 @@ public interface ItemService extends IService<Item> {
 
     ItemVO getItemDetail(Long itemId);
 
-    Page<ItemVO> getItemList(Integer page, Integer size, String keyword, Integer categoryId);
+    Page<ItemVO> getItemList(Integer page, Integer size, String keyword, Integer categoryId, Long ownerId, String condition, String sortOrder);
 
     List<ItemVO> getMyItems(Long userId);
 

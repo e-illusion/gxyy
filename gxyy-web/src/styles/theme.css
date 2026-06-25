@@ -1,0 +1,377 @@
+/* ========================================
+   GXYY — Airbnb Design System
+   Primary: #FF385C (Rausch) | Canvas: #FFFFFF | Ink: #222222
+   ======================================== */
+
+:root {
+  /* ── Airbnb Brand Colors ── */
+  --color-primary: #FF385C;
+  --color-primary-active: #E00B41;
+  --color-primary-disabled: #FFD1DA;
+  --color-primary-light-1: #FF5A78;
+  --color-primary-light-2: #FF7C94;
+  --color-primary-light-3: #FF9DAF;
+  --color-primary-light-4: #FFBECB;
+  --color-primary-light-5: #FFD1DA;
+  --color-primary-light-6: #FFE0E6;
+  --color-primary-light-7: #FFEBF0;
+  --color-primary-light-8: #FFF5F7;
+  --color-primary-light-9: #FFFAFB;
+  --color-primary-dark: #E00B41;
+  --color-primary-dark-1: #C40033;
+  --color-primary-dark-2: #A8002B;
+
+  --color-luxe: #460479;
+  --color-plus: #92174D;
+
+  /* ── Surface ── */
+  --color-canvas: #FFFFFF;
+  --color-surface-soft: #F7F7F7;
+  --color-surface-strong: #F2F2F2;
+
+  /* ── Hairlines & Borders ── */
+  --color-hairline: #DDDDDD;
+  --color-hairline-soft: #EBEBEB;
+  --color-border-strong: #C1C1C1;
+
+  /* ── Text ── */
+  --color-ink: #222222;
+  --color-body: #3F3F3F;
+  --color-muted: #6A6A6A;
+  --color-muted-soft: #929292;
+  --color-on-primary: #FFFFFF;
+
+  /* ── Semantic ── */
+  --color-error-text: #C13515;
+  --color-error-text-hover: #B32505;
+  --color-legal-link: #428BFF;
+  --color-star-rating: #222222;
+  --color-scrim: #000000;
+
+  /* ── Background (legacy compat) ── */
+  --bg-warm-white: #FFFFFF;
+  --bg-page: #FFFFFF;
+  --bg-card: #FFFFFF;
+  --bg-glass: rgba(255, 255, 255, 0.92);
+
+  /* ── Text (legacy compat) ── */
+  --text-primary: #222222;
+  --text-secondary: #3F3F3F;
+  --text-muted: #6A6A6A;
+  --text-placeholder: #929292;
+
+  /* ── Border (legacy compat) ── */
+  --border-color: #DDDDDD;
+  --border-color-light: #EBEBEB;
+
+  /* ── Elevation (Airbnb single shadow tier) ── */
+  --shadow-card: rgba(0,0,0,0.02) 0 0 0 1px, rgba(0,0,0,0.04) 0 2px 6px 0, rgba(0,0,0,0.10) 0 4px 8px 0;
+  --shadow-card-hover: rgba(0,0,0,0.04) 0 0 0 1px, rgba(0,0,0,0.06) 0 4px 12px 0, rgba(0,0,0,0.12) 0 8px 16px 0;
+  --shadow-nav: rgba(0,0,0,0.02) 0 0 0 1px, rgba(0,0,0,0.04) 0 2px 6px 0;
+  --shadow-dialog: rgba(0,0,0,0.02) 0 0 0 1px, rgba(0,0,0,0.04) 0 4px 12px 0, rgba(0,0,0,0.15) 0 8px 32px 0;
+
+  /* ── Radius (Airbnb system) ── */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 32px;
+  --radius-full: 9999px;
+  --radius-card: 14px;
+  --radius-button: 8px;
+  --radius-input: 8px;
+  --radius-tag: 9999px;
+  --radius-modal: 20px;
+
+  /* ── Spacing (4px base) ── */
+  --spacing-xxs: 2px;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-base: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-xxl: 48px;
+  --spacing-section: 64px;
+
+  /* ── Transitions ── */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.2s cubic-bezier(0.2, 0, 0, 1);
+  --transition-slow: 0.3s cubic-bezier(0.2, 0, 0, 1);
+
+  /* ── Font ── */
+  --font-family: 'Inter', Circular, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+
+  /* ══════════════════════════════════════
+     Element Plus Overrides
+     ══════════════════════════════════════ */
+  --el-color-primary: var(--color-primary);
+  --el-color-primary-light-3: var(--color-primary-light-3);
+  --el-color-primary-light-5: var(--color-primary-light-5);
+  --el-color-primary-light-7: var(--color-primary-light-7);
+  --el-color-primary-light-8: var(--color-primary-light-8);
+  --el-color-primary-light-9: var(--color-primary-light-9);
+  --el-color-primary-dark-2: var(--color-primary-dark-2);
+
+  --el-color-success: #2DA844;
+  --el-color-success-light-3: #7BC87E;
+  --el-color-success-light-5: #A3D9A5;
+  --el-color-success-light-7: #C5E8C6;
+  --el-color-success-light-8: #D6F0D7;
+  --el-color-success-light-9: #EBF7EC;
+  --el-color-success-dark-2: #1E7E34;
+
+  --el-color-warning: #E07912;
+  --el-color-warning-light-3: #ECA655;
+  --el-color-warning-light-5: #F4C98C;
+  --el-color-warning-light-7: #F8E0BA;
+  --el-color-warning-light-8: #FAEBD0;
+  --el-color-warning-light-9: #FDF6EC;
+  --el-color-warning-dark-2: #B85F0A;
+
+  --el-color-danger: var(--color-error-text);
+  --el-color-danger-light-3: #D97D6A;
+  --el-color-danger-light-5: #E6A89B;
+  --el-color-danger-light-7: #F0CBC2;
+  --el-color-danger-light-8: #F5DDD7;
+  --el-color-danger-light-9: #FAEEEB;
+  --el-color-danger-dark-2: #A32A0F;
+
+  --el-color-info: #6A6A6A;
+
+  --el-bg-color: var(--color-canvas);
+  --el-bg-color-page: var(--color-canvas);
+  --el-bg-color-overlay: var(--color-canvas);
+  --el-fill-color-blank: var(--color-canvas);
+  --el-fill-color-light: var(--color-surface-soft);
+
+  --el-text-color-primary: var(--color-ink);
+  --el-text-color-regular: var(--color-body);
+  --el-text-color-secondary: var(--color-muted);
+  --el-text-color-placeholder: var(--color-muted-soft);
+
+  --el-border-color: var(--color-hairline);
+  --el-border-color-light: var(--color-hairline-soft);
+  --el-border-color-lighter: var(--color-hairline-soft);
+  --el-border-color-extra-light: #F5F5F5;
+
+  --el-border-radius-base: var(--radius-input);
+  --el-border-radius-small: 6px;
+  --el-border-radius-round: var(--radius-full);
+
+  --el-box-shadow-light: var(--shadow-card);
+  --el-box-shadow: var(--shadow-card-hover);
+  --el-box-shadow-dark: var(--shadow-dialog);
+
+  --el-font-family: var(--font-family);
+}
+
+/* ══════════════════════════════════════
+   Dark Mode
+   ══════════════════════════════════════ */
+.dark {
+  --color-primary: #FF385C;
+  --color-primary-active: #FF5A78;
+  --color-primary-disabled: #5C1A28;
+  --color-primary-light-3: #8B2040;
+  --color-primary-light-5: #6B1832;
+  --color-primary-light-7: #4B1024;
+  --color-primary-light-9: #2B0816;
+  --color-primary-dark-2: #FF7C94;
+
+  --color-canvas: #1A1A1A;
+  --color-surface-soft: #242424;
+  --color-surface-strong: #2E2E2E;
+  --color-hairline: #3A3A3A;
+  --color-hairline-soft: #2E2E2E;
+  --color-border-strong: #555555;
+
+  --color-ink: #E8E8E8;
+  --color-body: #B0B0B0;
+  --color-muted: #888888;
+  --color-muted-soft: #666666;
+
+  --color-error-text: #E85D3D;
+  --color-legal-link: #6BABFF;
+
+  --bg-warm-white: #1A1A1A;
+  --bg-page: #1A1A1A;
+  --bg-card: #242424;
+  --bg-glass: rgba(36, 36, 36, 0.92);
+
+  --text-primary: #E8E8E8;
+  --text-secondary: #B0B0B0;
+  --text-muted: #888888;
+  --text-placeholder: #666666;
+
+  --border-color: #3A3A3A;
+  --border-color-light: #2E2E2E;
+
+  --shadow-card: rgba(0,0,0,0.20) 0 0 0 1px, rgba(0,0,0,0.30) 0 2px 6px 0, rgba(0,0,0,0.50) 0 4px 8px 0;
+  --shadow-card-hover: rgba(0,0,0,0.30) 0 0 0 1px, rgba(0,0,0,0.40) 0 4px 12px 0, rgba(0,0,0,0.60) 0 8px 16px 0;
+  --shadow-nav: rgba(0,0,0,0.20) 0 0 0 1px, rgba(0,0,0,0.30) 0 2px 6px 0;
+  --shadow-dialog: rgba(0,0,0,0.20) 0 0 0 1px, rgba(0,0,0,0.30) 0 4px 12px 0, rgba(0,0,0,0.60) 0 8px 32px 0;
+
+  --el-color-primary: var(--color-primary);
+  --el-color-primary-light-3: var(--color-primary-light-3);
+  --el-color-primary-light-5: var(--color-primary-light-5);
+  --el-color-primary-light-7: var(--color-primary-light-7);
+  --el-color-primary-light-9: var(--color-primary-light-9);
+  --el-color-primary-dark-2: var(--color-primary-dark-2);
+
+  --el-color-success: #3CC95A;
+  --el-color-warning: #F0982C;
+  --el-color-danger: var(--color-error-text);
+  --el-color-info: #888888;
+
+  --el-bg-color: var(--color-canvas);
+  --el-bg-color-page: var(--color-canvas);
+  --el-bg-color-overlay: var(--bg-card);
+  --el-fill-color-blank: var(--bg-card);
+  --el-fill-color-light: var(--color-surface-soft);
+
+  --el-text-color-primary: var(--color-ink);
+  --el-text-color-regular: var(--color-body);
+  --el-text-color-secondary: var(--color-muted);
+  --el-text-color-placeholder: var(--color-muted-soft);
+
+  --el-border-color: var(--color-hairline);
+  --el-border-color-light: var(--color-hairline-soft);
+  --el-border-color-lighter: var(--color-hairline-soft);
+  --el-border-color-extra-light: #2A2A2A;
+
+  --el-box-shadow-light: var(--shadow-card);
+  --el-box-shadow: var(--shadow-card-hover);
+  --el-box-shadow-dark: var(--shadow-dialog);
+}
+
+/* ══════════════════════════════════════
+   Global Styles
+   ══════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+body {
+  margin: 0;
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color var(--transition-normal), color var(--transition-normal);
+}
+
+#app { min-height: 100vh; }
+
+/* ── Airbnb glass card ── */
+.glass-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--color-hairline);
+  box-shadow: var(--shadow-card);
+  transition: box-shadow var(--transition-normal), transform var(--transition-normal);
+}
+
+/* ── Airbnb property card (flat at rest, float on hover) ── */
+.bento-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--color-hairline);
+  box-shadow: none;
+  transition: box-shadow var(--transition-normal), transform var(--transition-normal);
+}
+.bento-card:hover {
+  box-shadow: var(--shadow-card-hover);
+  transform: translateY(-2px);
+}
+
+/* ── Subtle hero gradient ── */
+.hero-bg {
+  background:
+    radial-gradient(ellipse at 30% 50%, rgba(255,56,92,0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 50%, rgba(70,4,121,0.02) 0%, transparent 50%),
+    var(--color-canvas);
+}
+
+/* ── Page transitions ── */
+.page-fade-enter-active, .page-fade-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.page-fade-enter-from { opacity: 0; transform: translateY(8px); }
+.page-fade-leave-to { opacity: 0; transform: translateY(-4px); }
+
+/* ── a11y ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ══════════════════════════════════════
+   Airbnb Component Overrides
+   ══════════════════════════════════════ */
+
+/* Button: 8px radius, no transform active, color flip */
+.el-button--primary {
+  border-radius: 8px !important;
+  font-weight: 500;
+  transition: background-color 0.15s ease;
+}
+.el-button--primary:active {
+  background-color: var(--color-primary-active) !important;
+  transform: none !important;
+}
+
+/* Input: hairline border, 2px ink on focus, no glow */
+.el-input__wrapper {
+  border-radius: 8px !important;
+  box-shadow: 0 0 0 1px var(--color-hairline) !important;
+  transition: box-shadow 0.15s ease;
+}
+.el-input__wrapper:hover {
+  box-shadow: 0 0 0 1px var(--color-ink) !important;
+}
+.el-input.is-focus .el-input__wrapper,
+.el-input__wrapper.is-focus {
+  box-shadow: 0 0 0 2px var(--color-ink) !important;
+}
+
+/* Card: 14px radius, hairline border, flat at rest */
+.el-card {
+  border-radius: 14px !important;
+  border: 1px solid var(--color-hairline) !important;
+  box-shadow: none !important;
+  transition: box-shadow 0.2s cubic-bezier(0.2,0,0,1), transform 0.2s cubic-bezier(0.2,0,0,1);
+}
+.el-card:hover {
+  box-shadow: var(--shadow-card-hover) !important;
+}
+
+/* Tag: full pill */
+.el-tag { border-radius: 9999px !important; }
+
+/* Menu: hairline bottom */
+.el-menu { border-bottom: 1px solid var(--color-hairline) !important; }
+.el-menu-item { font-weight: 500; }
+
+/* Pagination: round */
+.el-pagination .el-pager li { border-radius: 9999px !important; }
+
+/* Dialog: 20px radius */
+.el-dialog { border-radius: 20px !important; }
+
+/* Dropdown: rounded + shadow */
+.el-dropdown-menu {
+  border-radius: 14px !important;
+  border: 1px solid var(--color-hairline) !important;
+  box-shadow: var(--shadow-card-hover) !important;
+}
+
+/* Switch: Rausch when checked */
+.el-switch.is-checked .el-switch__core {
+  background-color: var(--color-primary) !important;
+  border-color: var(--color-primary) !important;
+}
