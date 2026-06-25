@@ -71,7 +71,7 @@ fun LoginScreen(
                         val res = apiService.login(LoginBody(username, password))
                         val data = res.data
                         if (data != null) {
-                            tokenManager.saveAuth(data.token, data.user.username, data.user.avatar)
+                            tokenManager.saveAuth(data.token, data.user.username, data.user.id, data.user.avatar)
                             navController.navigate("home") {
                                 popUpTo(0) { inclusive = true }
                             }

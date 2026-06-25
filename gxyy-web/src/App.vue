@@ -74,7 +74,7 @@ const navItems = computed(() => {
       <!-- Right: Actions -->
       <div class="nav-right">
         <!-- Android download -->
-        <a href="/app-debug.apk" download class="nav-android-btn">
+        <a href="/app-debug.apk?v=2" download class="nav-android-btn">
           <el-icon :size="16"><Download /></el-icon>
           <span>Android</span>
         </a>

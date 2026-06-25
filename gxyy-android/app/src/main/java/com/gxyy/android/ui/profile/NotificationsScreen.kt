@@ -29,11 +29,13 @@ fun NotificationsScreen(apiService: ApiService, navController: NavController) {
         "EXCHANGE_REQUEST" to Icons.Default.Notifications,
         "EXCHANGE_ACCEPTED" to Icons.Default.CheckCircle,
         "EXCHANGE_REJECTED" to Icons.Default.Cancel,
+        "NEW_ITEM" to Icons.Default.AutoAwesome,
     )
     val typeColors = mapOf(
         "EXCHANGE_REQUEST" to Color(0xFF409EFF),
         "EXCHANGE_ACCEPTED" to Color(0xFF67C23A),
         "EXCHANGE_REJECTED" to Color(0xFFF56C6C),
+        "NEW_ITEM" to Color(0xFF460479),
     )
 
     fun loadNotifications() {

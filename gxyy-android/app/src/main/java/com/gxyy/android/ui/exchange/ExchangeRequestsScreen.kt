@@ -83,7 +83,7 @@ fun ExchangeRequestsScreen(apiService: ApiService, navController: NavController)
                                 }
                                 req.message?.let {
                                     Spacer(Modifier.height(4.dp))
-                                    Text("💬 $it", fontSize = 14.sp,
+                                    Text("$it", fontSize = 14.sp,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant)
                                 }
                                 if (req.status == "PENDING") {

@@ -21,6 +21,8 @@ import com.gxyy.android.ui.item.CreateItemScreen
 import com.gxyy.android.ui.item.EditItemScreen
 import com.gxyy.android.ui.item.ItemDetailScreen
 import com.gxyy.android.ui.item.MyItemsScreen
+import com.gxyy.android.ui.favorites.FavoritesScreen
+import com.gxyy.android.ui.follow.FollowListScreen
 import com.gxyy.android.ui.profile.NotificationsScreen
 import com.gxyy.android.ui.profile.ProfileScreen
 import com.gxyy.android.ui.profile.UserProfileScreen
@@ -47,6 +49,10 @@ sealed class Screen(val route: String) {
         fun createRoute(id: Long) = "user/$id"
     }
     object Profile : Screen("profile")
+    object Favorites : Screen("favorites")
+    object FollowList : Screen("follow-list/{userId}/{type}") {
+        fun createRoute(userId: Long, type: String) = "follow-list/$userId/$type"
+    }
 }
 
 data class BottomNavItem(
@@ -66,6 +72,16 @@ fun GxyyApp() {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
+    // Load userId from API if not cached (supports old login sessions)
+    var myUserId by remember { mutableLongStateOf(tokenManager.getUserId()) }
+    LaunchedEffect(Unit) {
+        if (myUserId == 0L && tokenManager.getToken() != null) {
+            try {
+                val res = apiService.getProfile()
+                if (res.code == 200 && res.data != null) myUserId = res.data.id
+            } catch (_: Exception) {}
+        }
+    }
 
     val bottomNavItems = listOf(
         BottomNavItem(Screen.Home, "首页",
@@ -117,7 +133,10 @@ fun GxyyApp() {
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(Screen.Home.route) {
-                HomeScreen(apiService, navController)
+                HomeScreen(api = apiService,
+                    onItemClick = { id -> navController.navigate(Screen.ItemDetail.createRoute(id)) },
+                    onUserClick = { id -> navController.navigate(Screen.UserProfile.createRoute(id)) },
+                    onCreateClick = { navController.navigate(Screen.CreateItem.route) })
             }
             composable(Screen.Login.route) {
                 LoginScreen(apiService, tokenManager, navController)
@@ -133,7 +152,13 @@ fun GxyyApp() {
                 arguments = listOf(navArgument("id") { type = NavType.LongType })
             ) { backStackEntry ->
                 val id = backStackEntry.arguments?.getLong("id") ?: 0L
-                ItemDetailScreen(id, apiService, tokenManager, navController)
+                ItemDetailScreen(itemId = id, api = apiService,
+                    currentUserId = myUserId,
+                    onBack = { navController.popBackStack() },
+                    onLogin = { navController.navigate(Screen.Login.route) },
+                    onEdit = { iid -> navController.navigate(Screen.EditItem.createRoute(iid)) },
+                    onUser = { uid -> navController.navigate(Screen.UserProfile.createRoute(uid)) },
+                    onChat = { eid -> navController.navigate(Screen.Chat.createRoute(eid)) })
             }
             composable(
                 Screen.EditItem.route,
@@ -143,7 +168,10 @@ fun GxyyApp() {
                 EditItemScreen(id, apiService, navController)
             }
             composable(Screen.MyItems.route) {
-                MyItemsScreen(apiService, navController)
+                MyItemsScreen(api = apiService,
+                    onBack = { navController.popBackStack() },
+                    onItemClick = { id -> navController.navigate(Screen.ItemDetail.createRoute(id)) },
+                    onEdit = { id -> navController.navigate(Screen.EditItem.createRoute(id)) })
             }
             composable(Screen.ExchangeRequests.route) {
                 ExchangeRequestsScreen(apiService, navController)
@@ -161,12 +189,30 @@ fun GxyyApp() {
             composable(Screen.Profile.route) {
                 ProfileScreen(apiService, tokenManager, navController)
             }
+            composable(Screen.Favorites.route) {
+                FavoritesScreen(api = apiService,
+                    onItemClick = { id -> navController.navigate(Screen.ItemDetail.createRoute(id)) },
+                    onBack = { navController.popBackStack() })
+            }
+            composable(
+                Screen.FollowList.route,
+                arguments = listOf(navArgument("userId") { type = NavType.LongType }, navArgument("type") { type = NavType.StringType })
+            ) { backStackEntry ->
+                val userId = backStackEntry.arguments?.getLong("userId") ?: 0L
+                val type = backStackEntry.arguments?.getString("type") ?: "followers"
+                FollowListScreen(api = apiService, userId = userId, type = type,
+                    onUserClick = { id -> navController.navigate(Screen.UserProfile.createRoute(id)) },
+                    onBack = { navController.popBackStack() })
+            }
             composable(
                 Screen.UserProfile.route,
                 arguments = listOf(navArgument("id") { type = NavType.LongType })
             ) { backStackEntry ->
                 val id = backStackEntry.arguments?.getLong("id") ?: 0L
-                UserProfileScreen(id, apiService, navController)
+                UserProfileScreen(userId = id, api = apiService,
+                    onBack = { navController.popBackStack() },
+                    onItemClick = { iid -> navController.navigate(Screen.ItemDetail.createRoute(iid)) },
+                    onFollowList = { uid, type -> navController.navigate(Screen.FollowList.createRoute(uid, type)) })
             }
         }
     }

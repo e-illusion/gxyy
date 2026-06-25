@@ -72,11 +72,11 @@ fun ChatScreen(
     ) { padding ->
         Column(Modifier.fillMaxSize().padding(padding)) {
             if (loading) {
-                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Box(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator()
                 }
             } else if (messages.isEmpty()) {
-                Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Box(Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
                     Text("暂无消息，开始聊天确定交换时间地点吧", color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
             } else {
@@ -91,23 +91,17 @@ fun ChatScreen(
                             horizontalAlignment = if (msg.isMine) Alignment.End else Alignment.Start
                         ) {
                             if (!msg.isMine) {
-                                Text(msg.senderName, fontSize = 12.sp,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                Text(msg.senderName, fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             }
                             Spacer(Modifier.height(2.dp))
                             Surface(
-                                color = if (msg.isMine) MaterialTheme.colorScheme.primary
-                                        else MaterialTheme.colorScheme.surfaceVariant,
+                                color = if (msg.isMine) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant,
                                 shape = MaterialTheme.shapes.medium
                             ) {
-                                Text(msg.content, modifier = Modifier.padding(10.dp),
-                                    color = if (msg.isMine) MaterialTheme.colorScheme.onPrimary
-                                            else MaterialTheme.colorScheme.onSurfaceVariant)
+                                Text(msg.content, Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                                    color = if (msg.isMine) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant)
                             }
-                            Text(msg.createTime?.substring(11, 16) ?: "",
-                                fontSize = 11.sp,
-                                color = MaterialTheme.colorScheme.outline,
-                                modifier = Modifier.padding(horizontal = 4.dp))
+                            Text(msg.createTime?.substring(11, 16) ?: "", fontSize = 11.sp, color = MaterialTheme.colorScheme.outline, modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp))
                         }
                     }
                 }

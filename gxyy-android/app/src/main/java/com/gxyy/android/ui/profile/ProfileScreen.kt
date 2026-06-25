@@ -20,9 +20,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.gxyy.android.BuildConfig
 import com.gxyy.android.data.ApiService
-import com.gxyy.android.model.UpdateProfileBody
-import com.gxyy.android.model.User
+import com.gxyy.android.model.*
 import com.gxyy.android.model.thumbUrl
+import com.gxyy.android.util.safeApiCall
 import com.gxyy.android.ui.Screen
 import com.gxyy.android.util.TokenManager
 import coil.compose.AsyncImage
@@ -44,6 +44,9 @@ fun ProfileScreen(
     var editPhone by remember { mutableStateOf("") }
     var editEmail by remember { mutableStateOf("") }
     var editAddress by remember { mutableStateOf("") }
+    var followerCount by remember { mutableLongStateOf(0) }
+    var followingCount by remember { mutableLongStateOf(0) }
+    val uid = remember { tokenManager.getUserId() }
     var uploadLoading by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -94,6 +97,12 @@ fun ProfileScreen(
         }
     }
 
+    LaunchedEffect(Unit) {
+        if (uid > 0) {
+            safeApiCall(null) { apiService.getFollowCounts(uid) }?.let { followerCount = it.followers; followingCount = it.following }
+        }
+    }
+
     Scaffold(snackbarHost = { SnackbarHost(snackbarHostState) }) { padding ->
         if (!isLoggedIn) {
             Box(Modifier.fillMaxSize().padding(padding), contentAlignment = Alignment.Center) {
@@ -135,6 +144,15 @@ fun ProfileScreen(
                     }
                     Spacer(Modifier.height(4.dp))
                     Text(user?.username ?: "", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                    Spacer(Modifier.height(6.dp))
+                    Row(horizontalArrangement = Arrangement.spacedBy(24.dp)) {
+                        TextButton(onClick = { navController.navigate(Screen.FollowList.createRoute(uid, "followers")) }) {
+                            Text("$followerCount 粉丝", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
+                        }
+                        TextButton(onClick = { navController.navigate(Screen.FollowList.createRoute(uid, "following")) }) {
+                            Text("$followingCount 关注", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
+                        }
+                    }
                     user?.address?.ifBlank { null }?.let { addr ->
                         Text(addr, fontSize = 13.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         Spacer(Modifier.height(4.dp))
@@ -163,6 +181,12 @@ fun ProfileScreen(
                         headlineContent = { Text("消息通知") },
                         leadingContent = { Icon(Icons.Default.Notifications, null) },
                         modifier = Modifier.clickable { navController.navigate(Screen.Notifications.route) }
+                    )
+                    HorizontalDivider()
+                    ListItem(
+                        headlineContent = { Text("我的收藏") },
+                        leadingContent = { Icon(Icons.Default.Favorite, null, tint = MaterialTheme.colorScheme.primary) },
+                        modifier = Modifier.clickable { navController.navigate(Screen.Favorites.route) }
                     )
                     HorizontalDivider()
                     ListItem(

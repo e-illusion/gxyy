@@ -18,6 +18,7 @@ class TokenManager(private val context: Context) {
     companion object {
         private val KEY_TOKEN = stringPreferencesKey("jwt_token")
         private val KEY_USERNAME = stringPreferencesKey("username")
+        private val KEY_USER_ID = stringPreferencesKey("user_id")
         private val KEY_AVATAR = stringPreferencesKey("avatar")
 
         @Volatile
@@ -34,6 +35,7 @@ class TokenManager(private val context: Context) {
 
     private var cachedToken: String? = null
     private var cachedUsername: String? = null
+    private var cachedUserId: Long = 0
     private var cachedAvatar: String? = null
     private var cacheLoaded = false
 
@@ -41,6 +43,7 @@ class TokenManager(private val context: Context) {
         if (!cacheLoaded) {
             cachedToken = tokenFlow.first()
             cachedUsername = context.dataStore.data.map { it[KEY_USERNAME] }.first()
+            cachedUserId = context.dataStore.data.map { it[KEY_USER_ID] }.first()?.toLongOrNull() ?: 0
             cachedAvatar = context.dataStore.data.map { it[KEY_AVATAR] }.first()
             cacheLoaded = true
         }
@@ -60,6 +63,11 @@ class TokenManager(private val context: Context) {
         return cachedUsername
     }
 
+    fun getUserId(): Long {
+        if (!cacheLoaded) { runBlocking { loadCache() } }
+        return cachedUserId
+    }
+
     fun getAvatar(): String? {
         if (!cacheLoaded) {
             runBlocking { loadCache() }
@@ -67,16 +75,14 @@ class TokenManager(private val context: Context) {
         return cachedAvatar
     }
 
-    suspend fun saveAuth(token: String, username: String, avatar: String?) {
+    suspend fun saveAuth(token: String, username: String, userId: Long, avatar: String?) {
         context.dataStore.edit { prefs ->
             prefs[KEY_TOKEN] = token
             prefs[KEY_USERNAME] = username
+            prefs[KEY_USER_ID] = userId.toString()
             if (avatar != null) prefs[KEY_AVATAR] = avatar
         }
-        // 更新内存缓存
-        cachedToken = token
-        cachedUsername = username
-        cachedAvatar = avatar
+        cachedToken = token; cachedUsername = username; cachedUserId = userId; cachedAvatar = avatar
         cacheLoaded = true
     }
 
