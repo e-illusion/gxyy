@@ -19,6 +19,15 @@ const goMyItems = () => router.push('/my-items')
 const goExchange = () => router.push('/exchange-requests')
 const goNotifications = () => router.push('/notifications')
 
+const isDark = ref(localStorage.getItem('darkMode') === 'true')
+if (isDark.value) document.documentElement.classList.add('dark')
+
+const toggleDark = () => {
+  isDark.value = !isDark.value
+  document.documentElement.classList.toggle('dark', isDark.value)
+  localStorage.setItem('darkMode', isDark.value.toString())
+}
+
 const handleLogout = () => {
   userStore.logout()
   router.push('/login')
@@ -73,6 +82,10 @@ const navItems = computed(() => {
 
       <!-- Right: Actions -->
       <div class="nav-right">
+        <!-- Dark mode toggle -->
+        <button class="nav-dark-btn" @click="toggleDark" :title="isDark ? '切换亮色模式' : '切换暗黑模式'">
+          <el-icon :size="16"><Moon v-if="!isDark" /><Sunny v-else /></el-icon>
+        </button>
         <!-- Android download -->
         <a href="/app-debug.apk?v=2" download class="nav-android-btn">
           <el-icon :size="16"><Download /></el-icon>
@@ -218,6 +231,15 @@ body {
 }
 
 /* Android download link */
+.nav-dark-btn {
+  display: flex; align-items: center; justify-content: center;
+  width: 36px; height: 36px; background: none; border: none;
+  border-radius: 50%; cursor: pointer;
+  color: var(--color-muted);
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+.nav-dark-btn:hover { background: var(--color-surface-soft); color: var(--color-ink); }
+
 .nav-android-btn {
   display: flex;
   align-items: center;

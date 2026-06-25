@@ -1,6 +1,8 @@
 package com.gxyy.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.gxyy.common.BusinessException;
@@ -16,9 +18,11 @@ import com.gxyy.service.FavoriteService;
 import com.gxyy.vo.ItemVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.util.List;
 
 @Slf4j
@@ -31,15 +35,16 @@ public class FavoriteServiceImpl extends ServiceImpl<FavoriteMapper, Favorite>
     private final UserMapper userMapper;
     private final CategoryMapper categoryMapper;
 
+    @Value("${gxyy.upload.path}")
+    private String uploadPath;
+
     @Override
     @Transactional
     public void addFavorite(Long userId, Long itemId) {
-        // 检查物品是否存在
         Item item = itemMapper.selectById(itemId);
         if (item == null) {
             throw new BusinessException("物品不存在");
         }
-        // 检查是否已收藏
         Long count = baseMapper.selectCount(
             new LambdaQueryWrapper<Favorite>()
                 .eq(Favorite::getUserId, userId)
@@ -99,6 +104,20 @@ public class FavoriteServiceImpl extends ServiceImpl<FavoriteMapper, Favorite>
 
     private ItemVO buildItemVO(Item item) {
         ItemVO vo = BeanUtil.copyProperties(item, ItemVO.class);
+
+        // Parse images JSON and generate thumbnails
+        if (StrUtil.isNotBlank(item.getImages())) {
+            List<String> images = JSONUtil.toList(item.getImages(), String.class);
+            vo.setImages(images);
+            vo.setThumbImages(images.stream()
+                    .map(url -> {
+                        String thumbUrl = url.replaceAll("(\\.[^.]+)$", "_thumb$1");
+                        String thumbPath = uploadPath + thumbUrl.substring("/uploads/".length());
+                        return new File(thumbPath).exists() ? thumbUrl : url;
+                    })
+                    .toList());
+        }
+
         User owner = userMapper.selectById(item.getOwnerId());
         if (owner != null) {
             vo.setOwnerName(owner.getUsername());
